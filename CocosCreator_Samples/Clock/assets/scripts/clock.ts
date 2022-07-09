@@ -11,7 +11,7 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Clock extends cc.Component {
     private hoursToDeg: number = -360 / 12;
     private minutesToDeg: number = -360 / 60;
     private secondsToDeg: number = -360 / 60;
@@ -29,15 +29,15 @@ export default class NewClass extends cc.Component {
 
     update (dt) {
         let now_dt: Date = new Date();      // 現在の日時を取得
-        var children = this.node.children;  // Clock_BG（Node Treeパネル上）の下の子ノードを取得する
+        let children = this.node.children;  // Clock_BG（Node Treeパネル上）の下の子ノードを取得する
 
-        for (var i = 0; i < children.length; ++i) {
+        for (let i = 0; i < children.length; ++i) {
             children[i].zIndex = -3;
-            if (children[i].name == "long_hand") {
+            if (children[i].name == "r_tile16x16") {
                 // 長針のノードの場合の処理（分）
                 // 360度を60分割した角度（要は1分毎の角度）を現在の分に掛けて現在の分の角度を計算
                 children[i].angle = now_dt.getMinutes() * this.minutesToDeg;
-            } else if (children[i].name == "short_hand") {
+            } else if (children[i].name == "g_tile16x16") {
                 // 短針のノードの場合の処理（時）
                 // 現在の分により、短針の角度を徐々に次の時間まで動くよう微調整角度を計算
                 let addVal: number = ( now_dt.getMinutes() / 12 ) * 6;
@@ -46,7 +46,7 @@ export default class NewClass extends cc.Component {
                 // 6 * -30（１時間毎に進む角度）= -180度
                 // -180 - 15 = -195度が短針の角度（6時と7時の中間あたりに短針がくる）になる
                 children[i].angle = ( now_dt.getHours() * this.hoursToDeg ) - addVal;
-            } else if (children[i].name == "sec_hand") {
+            } else if (children[i].name == "b_tile16x16") {
                 // 秒針のノードの場合の処理
                 // 360度を60分割した角度（要は1秒毎の角度）を現在の秒に掛けて現在の秒の角度を計算
                 children[i].angle =now_dt.getSeconds() * this.secondsToDeg;
